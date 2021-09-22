@@ -14,11 +14,11 @@
           <v-list>
             <v-list-item v-for="(participant, index) in session.participants" :key="index">
               <v-list-item-icon>
-                <v-icon v-if="index === session.ownerId">mdi-crown</v-icon>
+                <v-icon v-if="participant.userId === session.ownerId">mdi-crown</v-icon>
                 <v-icon v-else>mdi-account</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title :class="{'font-weight-bold': participantId === index}">
+                <v-list-item-title :class="{'font-weight-bold': participant.userId === userId}">
                   {{ participant.name }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -31,11 +31,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import { onValue, ref } from 'firebase/database';
 import { realtimeDatabase } from '@/plugins/realtimeDatabase.ts';
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import AddParticipantDialog from '@/components/addParticipantDialog.vue';
 
 export default Vue.extend({
@@ -44,12 +44,13 @@ export default Vue.extend({
     session: null,
   }),
   computed: {
-    ...mapGetters(['getParticipantId']),
+    ...mapState(['userId']),
     sessionId() {
       return this.$route.params.sessionId;
     },
     participantId() {
-      return this.getParticipantId(this.sessionId);
+      if (!this.session?.participants) return undefined;
+      return Object.values(this.session.participants).find((participant) => participant.userId === this.userId);
     },
     isOwner() {
       return this.participantId === this.session.ownerId;
@@ -60,12 +61,10 @@ export default Vue.extend({
   },
   created() {
     this.joinSession();
-    console.log();
   },
   methods: {
     joinSession() {
       this.watchSession();
-      // this.addParticipant(this.form.name);
     },
     watchSession() {
       const session = ref(realtimeDatabase, `sessions/${this.sessionId}`);

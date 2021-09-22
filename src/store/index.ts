@@ -7,23 +7,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
-    sessions: []
+    userId: ''
   },
   mutations: {
-    setParticipantId(state, {participantId, sessionId}) {
-      console.log(state, participantId, sessionId);
-      state.sessions.push({
-        id: sessionId,
-        participantId
-      })
-    }
+    setUserId(state, userId) {
+      state.userId = userId;
+    },
   },
-  getters: {
-    getParticipantId: (state) => (sessionId: string) => {
-      const session = state.sessions.find((session) => session.id === sessionId);
-      if (session && session.participantId) {
-        return session.participantId
-      }
-    }
-  }
 })

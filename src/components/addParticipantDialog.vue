@@ -21,7 +21,7 @@
 <script lang="ts">
 import {child, push, ref, set} from 'firebase/database';
 import {realtimeDatabase} from '@/plugins/realtimeDatabase.ts';
-import {mapMutations} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: 'addParticipantDialog',
@@ -34,18 +34,19 @@ export default {
       required: true,
     }
   },
+  computed: {
+    ...mapState(['userId'])
+  },
   methods: {
-    ...mapMutations(['setParticipantId']),
     save(): void {
-      this.addParticipant(this.name);
+      this.addParticipant(this.name, this.userId);
     },
-    addParticipant(name: string): void {
+    addParticipant(name: string, userId: string): void {
       const participantId = push(child(ref(realtimeDatabase), 'sessions')).key;
       set(ref(realtimeDatabase, `sessions/${this.sessionId}/participants/${participantId}`), {
         name: name,
+        userId
       });
-      this.setParticipantId({participantId, sessionId: this.sessionId})
-      console.log(name, this.sessionId, participantId)
     },
   },
 };
