@@ -21,11 +21,16 @@
 <script lang="ts">
 import {child, push, ref, set} from 'firebase/database';
 import {realtimeDatabase} from '@/plugins/realtimeDatabase.ts';
-import {mapMutations, mapState} from "vuex";
+import {mapState} from "vuex";
+import Vue from "vue";
 
-export default {
+interface componentData {
+  name: string,
+}
+
+export default Vue.extend({
   name: 'addParticipantDialog',
-  data: () => ({
+  data: (): componentData => ({
     name: '',
   }),
   props: {
@@ -49,7 +54,7 @@ export default {
       });
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

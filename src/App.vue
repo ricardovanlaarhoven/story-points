@@ -6,7 +6,7 @@
         dark
     >
     </v-app-bar>
-    <v-main>
+    <v-main class="blue lighten-5">
       <router-view/>
     </v-main>
   </v-app>

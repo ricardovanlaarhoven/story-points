@@ -33,13 +33,20 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {child, push, ref, set, update} from 'firebase/database';
+import {child, push, ref, set} from 'firebase/database';
 import {realtimeDatabase} from '@/plugins/realtimeDatabase';
-import {mapMutations, mapState} from "vuex";
+import {mapState} from "vuex";
+
+interface componentData {
+  form: {
+    sessionName: string,
+    sessionId: string
+  }
+}
 
 export default Vue.extend({
   name: 'Home',
-  data: () => ({
+  data: (): componentData => ({
     form: {
       sessionName: '',
       sessionId: ''
@@ -49,17 +56,20 @@ export default Vue.extend({
     ...mapState(['userId'])
   },
   methods: {
-    startNewSession() {
-      this.sessionId = push(child(ref(realtimeDatabase), 'sessions')).key;
-
-      set(ref(realtimeDatabase, `sessions/${this.sessionId}`), {
-        name: this.form.sessionName,
-        ownerId: this.userId,
-        participants: []
-      });
-      this.joinSession(this.sessionId);
+    startNewSession(): void {
+      const sessionId = push(child(ref(realtimeDatabase), 'sessions')).key;
+      if (sessionId) {
+        set(ref(realtimeDatabase, `sessions/${sessionId}`), {
+          name: this.form.sessionName,
+          ownerId: this.userId,
+          participants: []
+        });
+        this.joinSession(sessionId);
+        return
+      }
+      throw 'Could not get a key while creating a new session';
     },
-    joinSession(sessionId: string) {
+    joinSession(sessionId: string): void {
       this.$router.push({name: 'session', params: {sessionId}});
     }
   }
