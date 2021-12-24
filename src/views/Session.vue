@@ -3,22 +3,21 @@
     <v-row class="flex-grow-0">
       <v-col>
         <h1 class="text-h3">{{ session.name }}</h1>
-        <h6 class="text-subtitle-2">
-          Join this session using this id: {{ sessionId }} or this link:
-          {{ currentLocation }}
-        </h6>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-btn text @click="copySessionToClipboard" v-on="on">
+              Share Session
+            </v-btn>
+          </template>
+          <span
+            >Click here to copy a link to this session, to share it with your
+            colleagues</span
+          >
+        </v-tooltip>
       </v-col>
     </v-row>
-    <v-row class="flex-grow-1">
-      <v-col cols="2">
-        <v-card class="mt-3">
-          <v-card-text>
-            <v-btn @click="createNewVoting" text>start new voting</v-btn>
-            {{ this.session.currentVotingId }}
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col>
+    <v-row class="flex-grow-1" justify="center">
+      <v-col lg="8">
         <PokerTable :session="session" />
       </v-col>
       <AddParticipantDialog :value="!hasJoined" :session-id="sessionId" />
@@ -53,6 +52,7 @@ interface session {
   participants: Record<string, { name: string }>;
   currentVotingId?: string;
   votings: Record<string, Record<string, string | number>>;
+  isRevealed: boolean;
 }
 
 interface componentData {
@@ -96,17 +96,6 @@ export default Vue.extend({
         this.session = snapshot.val();
       });
     },
-    createNewVoting() {
-      const votingsRef = ref(
-        realtimeDatabase,
-        `sessions/${this.sessionId}/votings`
-      );
-      const votingId = push(votingsRef).key;
-      set(
-        ref(realtimeDatabase, `sessions/${this.sessionId}/currentVotingId`),
-        votingId
-      );
-    },
     setVote(vote: string | number): void {
       if (!this.session) {
         throw new Error("No session");
@@ -122,6 +111,9 @@ export default Vue.extend({
         ),
         vote
       );
+    },
+    copySessionToClipboard() {
+      navigator.clipboard.writeText(this.currentLocation);
     }
   }
 });

@@ -21,26 +21,32 @@
         </div>
         <div
           class="card"
+          v-if="currentVotings[participantId]"
           :class="{
-            revealed: currentVotings[participantId] !== undefined
+            revealed: session.isRevealed
           }"
         >
-          <div class="content">
+          <div class="content" v-if="session.isRevealed">
             {{ currentVotings[participantId] }}
           </div>
         </div>
       </div>
     </div>
-    <div class="table"></div>
+    <div class="table d-flex justify-center align-center">
+      <NewVotingSessionBtn /><RevealCardsBtn class="ml-3" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { mapState } from "vuex";
+import NewVotingSessionBtn from "@/components/NewVotingSessionBtn.vue";
+import RevealCardsBtn from "@/components/RevealCardsBtn.vue";
 
 export default Vue.extend({
   name: "PokerTable",
+  components: { RevealCardsBtn, NewVotingSessionBtn },
   props: {
     session: {
       type: Object,
@@ -96,6 +102,7 @@ $playerSize: 100px;
       box-sizing: border-box;
     }
     &:after {
+      pointer-events: none;
       content: "";
       position: absolute;
       top: -16px;
@@ -109,6 +116,7 @@ $playerSize: 100px;
   }
 
   .players {
+    pointer-events: none;
     position: absolute;
     z-index: 1;
     top: 0;
