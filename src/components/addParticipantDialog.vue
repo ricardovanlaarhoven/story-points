@@ -1,14 +1,14 @@
 <template>
   <v-dialog
-      transition="dialog-bottom-transition"
-      max-width="600"
-      v-bind="$attrs"
-      persistent
+    transition="dialog-bottom-transition"
+    max-width="600"
+    v-bind="$attrs"
+    persistent
   >
     <v-form @submit.prevent="save">
       <v-card>
         <v-card-text>
-          <VTextField label="name" hint="whats your name?" v-model="name"/>
+          <VTextField label="name" hint="whats your name?" v-model="name" />
         </v-card-text>
         <v-card-actions justify="end">
           <v-btn type="submit">Save</v-btn>
@@ -19,44 +19,46 @@
 </template>
 
 <script lang="ts">
-import {child, push, ref, set} from 'firebase/database';
-import {realtimeDatabase} from '@/plugins/realtimeDatabase.ts';
-import {mapState} from "vuex";
+import { child, push, ref, set } from "firebase/database";
+import { realtimeDatabase } from "@/plugins/realtimeDatabase.ts";
+import { mapState } from "vuex";
 import Vue from "vue";
 
 interface componentData {
-  name: string,
+  name: string;
 }
 
 export default Vue.extend({
-  name: 'addParticipantDialog',
+  name: "addParticipantDialog",
   data: (): componentData => ({
-    name: '',
+    name: ""
   }),
   props: {
     sessionId: {
       type: String,
-      required: true,
+      required: true
     }
   },
   computed: {
-    ...mapState(['userId'])
+    ...mapState(["userId"])
   },
   methods: {
     save(): void {
       this.addParticipant(this.name, this.userId);
     },
     addParticipant(name: string, userId: string): void {
-      const participantId = push(child(ref(realtimeDatabase), 'sessions')).key;
-      set(ref(realtimeDatabase, `sessions/${this.sessionId}/participants/${participantId}`), {
-        name: name,
-        userId
-      });
-    },
-  },
+      set(
+        ref(
+          realtimeDatabase,
+          `sessions/${this.sessionId}/participants/${userId}`
+        ),
+        {
+          name: name
+        }
+      );
+    }
+  }
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
