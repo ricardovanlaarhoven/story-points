@@ -22,19 +22,7 @@
       </v-col>
       <AddParticipantDialog :value="!hasJoined" :session-id="sessionId" />
     </v-row>
-    <v-row class="flex-grow-0 justify-center" v-if="session.currentVotingId">
-      <v-card
-        class="text-center fill-height ma-3 d-flex"
-        elevation="6"
-        v-for="n in [0, 1, 2, 3, 5, 8, 13, 20, 40, 100, '?']"
-        :key="n"
-        width="100px"
-        height="150px"
-        @click="setVote(n)"
-      >
-        <div class="text-h4 text-center ma-auto">{{ n }}</div>
-      </v-card>
-    </v-row>
+    <Voting :session="session" />
   </v-col>
 </template>
 
@@ -45,6 +33,7 @@ import { realtimeDatabase } from "@/plugins/realtimeDatabase.ts";
 import { mapState } from "vuex";
 import AddParticipantDialog from "@/components/addParticipantDialog.vue";
 import PokerTable from "@/components/PokerTable.vue";
+import Voting from "@/components/Voting.vue";
 
 interface session {
   name: string;
@@ -61,6 +50,7 @@ interface componentData {
 
 export default Vue.extend({
   components: {
+    Voting,
     PokerTable,
     AddParticipantDialog
   },
@@ -95,22 +85,6 @@ export default Vue.extend({
       onValue(session, snapshot => {
         this.session = snapshot.val();
       });
-    },
-    setVote(vote: string | number): void {
-      if (!this.session) {
-        throw new Error("No session");
-      }
-      if (!this.session.currentVotingId) {
-        throw new Error("No current voting id");
-      }
-
-      set(
-        ref(
-          realtimeDatabase,
-          `sessions/${this.sessionId}/votings/${this.session.currentVotingId}/${this.userId}`
-        ),
-        vote
-      );
     },
     copySessionToClipboard() {
       navigator.clipboard.writeText(this.currentLocation);
