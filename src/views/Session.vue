@@ -5,7 +5,7 @@
         <h1 class="text-h3">{{ session.name }}</h1>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-btn text @click="copySessionToClipboard" v-on="on">
+            <v-btn text @click="copySessionToClipboard" v-on="on" color="grey">
               Share Session
             </v-btn>
           </template>
@@ -22,7 +22,7 @@
       </v-col>
       <AddParticipantDialog :value="!hasJoined" :session-id="sessionId" />
     </v-row>
-    <v-row class="flex-grow-0 justify-center">
+    <v-row class="flex-grow-0 justify-center" v-if="session.currentVotingId">
       <v-card
         class="text-center fill-height ma-3 d-flex"
         elevation="6"

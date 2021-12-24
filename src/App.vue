@@ -1,37 +1,31 @@
 <template>
   <v-app>
-    <v-app-bar
-        app
-        color="primary"
-        dark
-    >
-    </v-app-bar>
     <v-main class="blue lighten-5">
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {onAuthStateChanged, signInAnonymously} from "firebase/auth";
-import {authentication} from "@/plugins/authentication";
-import {mapMutations} from "vuex";
+import Vue from "vue";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { authentication } from "@/plugins/authentication";
+import { mapMutations } from "vuex";
 
 export default Vue.extend({
-  name: 'App',
+  name: "App",
   created() {
     signInAnonymously(authentication);
-    onAuthStateChanged(authentication, (user) => {
+    onAuthStateChanged(authentication, user => {
       if (user) {
         this.setUserId(user.uid);
       } else {
-        throw 'An anonymous user should never be logged out';
+        throw "An anonymous user should never be logged out";
       }
     });
   },
   methods: {
-    ...mapMutations(['setUserId']),
+    ...mapMutations(["setUserId"])
   }
 });
 </script>

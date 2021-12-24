@@ -1,45 +1,29 @@
 <template>
-  <v-container>
-    <v-row justify="center">
+  <v-container class="fill-height">
+    <v-row justify="center" align="center" class="fill-height">
       <v-col cols="12" sm="6" xl="4">
         <v-card>
-          <v-card-title>
-            <h1 class="text-h4">Start a session</h1>
-          </v-card-title>
-          <v-card-text>
-            <VTextField
-              label="session name"
-              hint="Whats the session about?"
-              v-model="form.sessionName"
-            />
-          </v-card-text>
-          <v-card-actions class="justify-end">
-            <v-btn @click="startNewSession" class="mt-6" color="primary"
-              >Create a session</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="6" xl="4">
-        <v-card>
-          <v-card-title>
-            <h2 class="text-h4">Join a session</h2>
-          </v-card-title>
-          <v-card-text>
-            <VTextField
-              label="session id"
-              hint="Whats the session id you received?"
-              v-model="form.sessionId"
-            />
-          </v-card-text>
-          <v-card-actions class="justify-end">
-            <v-btn
-              @click="joinSession(form.sessionId)"
-              class="mt-6"
-              color="primary"
-              >Join a session</v-btn
-            >
-          </v-card-actions>
+          <v-form @submit.prevent="startNewSession">
+            <v-card-title>
+              <h1 class="text-h4">Start a session</h1>
+            </v-card-title>
+            <v-card-text>
+              <p class="text-body-1">
+                You can start a planning poker session here, choose the name of
+                your session and share the link with your co-workers!
+              </p>
+              <VTextField
+                label="session name"
+                hint="Whats the session about?"
+                v-model="form.sessionName"
+              />
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn class="mt-6" color="primary" type="submit">
+                Create a session
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
@@ -77,7 +61,10 @@ export default Vue.extend({
         set(ref(realtimeDatabase, `sessions/${sessionId}`), {
           name: this.form.sessionName,
           ownerId: this.userId,
-          participants: []
+          isRevealed: false,
+          participants: [],
+          currentVotingId: "",
+          votings: []
         });
         this.joinSession(sessionId);
         return;
