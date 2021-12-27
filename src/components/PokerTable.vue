@@ -33,7 +33,8 @@
       </div>
     </div>
     <div class="table d-flex justify-center align-center">
-      <NewVotingSessionBtn /><RevealCardsBtn class="ml-3" />
+      <NewVotingSessionBtn v-if="isOwner" />
+      <RevealCardsBtn class="ml-3" v-if="isOwner" />
     </div>
   </div>
 </template>
@@ -55,6 +56,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapState(["userId"]),
+    isOwner(): boolean {
+      return this.userId === this.session?.ownerId;
+    },
     currentVotings(): Record<string, unknown>[] {
       if (
         !this.session ||

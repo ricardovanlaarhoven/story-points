@@ -5,7 +5,13 @@
         <h1 class="text-h3">{{ session.name }}</h1>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-btn text @click="copySessionToClipboard" v-on="on" color="grey">
+            <v-btn
+              text
+              @click="copySessionToClipboard"
+              v-on="on"
+              color="grey"
+              class="px-0"
+            >
               Share Session
             </v-btn>
           </template>
@@ -17,7 +23,7 @@
       </v-col>
     </v-row>
     <v-row class="flex-grow-1" justify="center">
-      <v-col lg="8">
+      <v-col md="10" lg="8" xl="6">
         <PokerTable :session="session" />
       </v-col>
       <AddParticipantDialog :value="!hasJoined" :session-id="sessionId" />
@@ -38,9 +44,9 @@ import Voting from "@/components/Voting.vue";
 interface session {
   name: string;
   ownerId: string;
-  participants: Record<string, { name: string }>;
+  participants?: Record<string, { name: string }>;
   currentVotingId?: string;
-  votings: Record<string, Record<string, string | number>>;
+  votings?: Record<string, Record<string, string | number>>;
   isRevealed: boolean;
 }
 
@@ -61,9 +67,6 @@ export default Vue.extend({
     ...mapState(["userId"]),
     sessionId(): string {
       return this.$route.params.sessionId;
-    },
-    isOwner(): boolean {
-      return this.userId === this.session?.ownerId;
     },
     currentLocation(): string {
       return window.location.href;

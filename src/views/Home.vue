@@ -13,8 +13,8 @@
                 your session and share the link with your co-workers!
               </p>
               <VTextField
-                label="session name"
-                hint="Whats the session about?"
+                label="Session name"
+                hint="What's the session about?"
                 v-model="form.sessionName"
               />
             </v-card-text>
@@ -62,9 +62,7 @@ export default Vue.extend({
           name: this.form.sessionName,
           ownerId: this.userId,
           isRevealed: false,
-          participants: [],
-          currentVotingId: "",
-          votings: []
+          currentVotingId: ""
         });
         this.joinSession(sessionId);
         return;

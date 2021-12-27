@@ -9,11 +9,9 @@
         class="text-center fill-height card"
         :class="{ revealed: session.currentVotingId }"
         elevation="6"
-        width="100px"
-        height="150px"
         @click="setVote(n)"
       >
-        <div class="text-h4 text-center ma-auto content">{{ n }}</div>
+        <div class="content">{{ n }}</div>
       </v-card>
     </div>
   </v-row>
@@ -62,10 +60,18 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .card-wrapper {
-  padding-top: 0 !important;
-  transition: padding 0.5s ease;
+  transition: margin 0.5s ease;
+  width: 6vw;
+  max-width: 100px;
+  max-height: 150px;
+  height: 10vw;
   &:hover {
-    padding-bottom: 10px !important;
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+  }
+  .card {
+    width: 100%;
+    font-size: 2.5vw;
   }
 }
 </style>

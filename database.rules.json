@@ -1,6 +1,24 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    "sessions": {
+      ".read": false,
+      "$session": {
+        ".read": true,
+        ".write": "!data.exists() || data.child('ownerId').val() == auth.uid",
+        "votings": {
+          ".write": true,
+          "$votingId": {
+            "$uid": {
+              ".write": "$uid == auth.uid"
+            }
+          }
+        },
+        "participants": {
+          "$uid": {
+            ".write": "$uid == auth.uid"
+          }
+        },
+      }
+    }
   }
 }
