@@ -21,7 +21,7 @@
         </div>
         <div
           class="card"
-          v-if="currentVotings[participantId]"
+          v-if="currentVotings[participantId] !== undefined"
           :class="{
             revealed: session.isRevealed
           }"
@@ -33,8 +33,13 @@
       </div>
     </div>
     <div class="table d-flex justify-center align-center">
-      <NewVotingSessionBtn v-if="isOwner && session.isRevealed" />
-      <RevealCardsBtn class="ml-3" v-if="isOwner && !session.isRevealed" />
+      <NewVotingSessionBtn
+        v-if="(isOwner && session.isRevealed) || !session.currentVotingId"
+      />
+      <RevealCardsBtn
+        class="ml-3"
+        v-if="isOwner && session.currentVotingId && !session.isRevealed"
+      />
     </div>
   </div>
 </template>
