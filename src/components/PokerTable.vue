@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="table d-flex justify-center align-center">
-      <NewVotingSessionBtn v-if="isOwner" />
-      <RevealCardsBtn class="ml-3" v-if="isOwner" />
+      <NewVotingSessionBtn v-if="isOwner && session.isRevealed" />
+      <RevealCardsBtn class="ml-3" v-if="isOwner && !session.isRevealed" />
     </div>
   </div>
 </template>

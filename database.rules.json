@@ -17,7 +17,7 @@
           "$uid": {
             ".write": "$uid == auth.uid"
           }
-        },
+        }
       }
     }
   }
