@@ -1,34 +1,11 @@
-# story-points
+# Story points plannings poker
 
-## Project setup
+## Development
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Demo
+https://story-points-5bd07.web.app/
+![poker](https://user-images.githubusercontent.com/1246691/147537665-1225e7a7-1040-44cd-87a6-392c82c7a5a1.gif)
