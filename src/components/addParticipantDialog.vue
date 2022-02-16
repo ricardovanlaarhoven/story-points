@@ -18,7 +18,7 @@
             <v-col>
               <VTextField label="name" hint="whats your name?" v-model="name" />
               <v-btn
-                v-for="colorOption in colors"
+                v-for="colorOption in colorOptions"
                 :key="colorOption"
                 icon
                 @click="color = colorOption"
@@ -54,13 +54,15 @@ import Vue from "vue";
 interface componentData {
   name: string;
   color: string;
+  colorOptions: string[];
 }
 
 export default Vue.extend({
   name: "addParticipantDialog",
   data: (): componentData => ({
     name: "",
-    color: "#FC9918"
+    color: "",
+    colorOptions: []
   }),
   props: {
     sessionId: {
@@ -69,18 +71,19 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapState(["userId"]),
-    colors() {
-      return [
-        "#FC9918",
-        "#676FA3",
-        "#35589A",
-        "#F14A16",
-        "#FF5959",
-        "#105652",
-        "#B24080"
-      ];
-    }
+    ...mapState(["userId"])
+  },
+  created() {
+    this.colorOptions = this.shuffleArray([
+      "#FC9918",
+      "#676FA3",
+      "#35589A",
+      "#F14A16",
+      "#FF5959",
+      "#105652",
+      "#B24080"
+    ]) as string[];
+    this.color = this.colorOptions[0];
   },
   methods: {
     save(): void {
@@ -94,6 +97,13 @@ export default Vue.extend({
         ),
         data
       );
+    },
+    shuffleArray(array: unknown[]): unknown[] {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
     }
   }
 });
