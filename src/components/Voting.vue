@@ -1,10 +1,6 @@
 <template>
   <v-row class="flex-grow-0 justify-center align-end">
-    <div
-      class="card-wrapper ma-3 d-flex"
-      v-for="n in [0, 1, 2, 3, 5, 8, 13, 20, 40, 100, '?']"
-      :key="n"
-    >
+    <div class="card-wrapper ma-3 d-flex" v-for="n in votingOptions" :key="n">
       <v-card
         class="text-center fill-height card"
         :class="{ revealed: session.currentVotingId }"
@@ -35,6 +31,12 @@ export default Vue.extend({
     ...mapState(["userId"]),
     sessionId(): string {
       return this.$route.params.sessionId;
+    },
+    votingOptions() {
+      if (!this.session.votingOptions) {
+        return ["½", 0, 1, 2, 3, 5, 8, 13, 20, 40, 100, "?"];
+      }
+      return this.session.votingOptions.split(",");
     }
   },
   methods: {
