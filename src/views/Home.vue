@@ -17,6 +17,14 @@
                 hint="What's the session about?"
                 v-model="form.sessionName"
               />
+              <VSelect
+                label="Voting options"
+                v-model="form.votingOptions"
+                placeholder="Custom option"
+                persistent-placeholder
+                :items="votingOptions"
+              />
+              <VTextField label="Voting options" v-model="form.votingOptions" />
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn class="mt-6" color="primary" type="submit">
@@ -40,7 +48,9 @@ interface componentData {
   form: {
     sessionName: string;
     sessionId: string;
+    votingOptions: string;
   };
+  votingOptions: { text: string; value: string }[];
 }
 
 export default Vue.extend({
@@ -48,11 +58,38 @@ export default Vue.extend({
   data: (): componentData => ({
     form: {
       sessionName: "",
-      sessionId: ""
-    }
+      sessionId: "",
+      votingOptions: ""
+    },
+    votingOptions: []
   }),
   computed: {
     ...mapState(["userId"])
+  },
+  created() {
+    this.votingOptions = [
+      {
+        text: "Modified Fibonacci",
+        value: "0,½,1,2,3,5,8,13,20,40,100"
+      },
+      {
+        text: "Fibonacci",
+        value: "0,1,2,3,5,8,13,21,34,55,89"
+      },
+      {
+        text: "Short modified Fibonacci",
+        value: "0,½,1,2,3,5,8,13,20"
+      },
+      {
+        text: "t-shirt sizes",
+        value: "xs,s,m,l,xl"
+      },
+      {
+        text: "Doubling of numbers",
+        value: "1,2,4,8,16,32,64"
+      }
+    ];
+    this.form.votingOptions = this.votingOptions[0].value;
   },
   methods: {
     startNewSession(): void {
@@ -62,7 +99,8 @@ export default Vue.extend({
           name: this.form.sessionName,
           ownerId: this.userId,
           isRevealed: false,
-          currentVotingId: ""
+          currentVotingId: "",
+          votingOptions: this.form.votingOptions
         });
         this.joinSession(sessionId);
         return;
