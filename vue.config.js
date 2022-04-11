@@ -3,6 +3,9 @@ module.exports = {
   pwa: {
     name: "Estimate story points",
     themeColor: "#a95555",
-    msTileColor: "#a95555"
+    msTileColor: "#a95555",
+    workboxOptions: {
+      skipWaiting: true
+    }
   }
 };
