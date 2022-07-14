@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="revealCards" outlined color="white">reveal cards</v-btn>
+  <v-btn @click="revealCards" outlined v-bind="$attrs">reveal cards</v-btn>
 </template>
 
 <script lang="ts">

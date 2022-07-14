@@ -1,24 +1,18 @@
 <template>
-  <div class="poker-wrapper">
-    <div class="players">
-      <div
-        class="player--wrapper pointer-events--all"
-        :class="`player--wrapper__${i + 1}`"
-        v-for="([participantId, participant], i) in Object.entries(
+  <div>
+    <v-row>
+      <v-col
+        cols="4"
+        class="text-center"
+        v-for="[participantId, participant] in Object.entries(
           session.participants
         )"
-        :key="i"
-        :title="participant.name"
+        :key="participantId"
       >
-        <div class="player" :style="`background-color: ${participant.color}`">
-          <div
-            class="player--name"
-            :class="{ 'font-weight-bold': participantId === userId }"
-          >
-            <v-icon v-if="participantId === session.ownerId">mdi-crown</v-icon>
-            <v-icon v-else>mdi-account</v-icon>
-            {{ participant.name }}
-          </div>
+        <div :title="participant.name" class="text-truncate">
+          <v-icon v-if="participantId === session.ownerId">mdi-crown</v-icon>
+          <v-icon v-else>mdi-account</v-icon>
+          {{ participant.name }}
         </div>
         <div
           class="card"
@@ -34,30 +28,28 @@
             {{ currentVotings[participantId] }}
           </div>
         </div>
-      </div>
-    </div>
-    <div class="table d-flex justify-center align-center">
+      </v-col>
+    </v-row>
+    <v-row class="justify-center mt-6">
       <NewVotingSessionBtn
-        color="white"
         v-if="isOwner && (session.isRevealed || !session.currentVotingId)"
       />
       <RevealCardsBtn
-        color="white"
         class="ml-3"
         v-if="isOwner && session.currentVotingId && !session.isRevealed"
       />
-    </div>
+    </v-row>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState } from "vuex";
-import NewVotingSessionBtn from "@/components/NewVotingSessionBtn.vue";
 import RevealCardsBtn from "@/components/RevealCardsBtn.vue";
+import NewVotingSessionBtn from "@/components/NewVotingSessionBtn.vue";
+import { mapState } from "vuex";
 
 export default Vue.extend({
-  name: "PokerTable",
+  name: "MobileVotings",
   components: { RevealCardsBtn, NewVotingSessionBtn },
   props: {
     session: {

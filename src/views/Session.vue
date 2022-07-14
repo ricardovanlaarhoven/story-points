@@ -24,7 +24,8 @@
     </v-row>
     <v-row class="flex-grow-1" justify="center">
       <v-col md="10" lg="8" xl="6">
-        <PokerTable :session="session" />
+        <PokerTable :session="session" v-if="$vuetify.breakpoint.mdAndUp" />
+        <MobileVotings :session="session" v-else />
       </v-col>
       <AddParticipantDialog :value="!hasJoined" :session-id="sessionId" />
     </v-row>
@@ -40,6 +41,7 @@ import { mapState } from "vuex";
 import AddParticipantDialog from "@/components/addParticipantDialog.vue";
 import PokerTable from "@/components/PokerTable.vue";
 import Voting from "@/components/Voting.vue";
+import MobileVotings from "@/components/MobileVotings.vue";
 
 interface session {
   name: string;
@@ -56,6 +58,7 @@ interface componentData {
 
 export default Vue.extend({
   components: {
+    MobileVotings,
     Voting,
     PokerTable,
     AddParticipantDialog

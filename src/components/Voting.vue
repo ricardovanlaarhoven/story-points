@@ -75,5 +75,13 @@ export default Vue.extend({
     width: 100%;
     font-size: 2.5vw;
   }
+
+  @media (max-width: 1000px) {
+    width: 12vw;
+    height: 20vw;
+    .card {
+      font-size: 5vw;
+    }
+  }
 }
 </style>

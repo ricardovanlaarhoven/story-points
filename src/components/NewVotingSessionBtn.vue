@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="createNewVoting" outlined color="white"
+  <v-btn @click="createNewVoting" outlined v-bind="$attrs"
     >new voting session</v-btn
   >
 </template>
